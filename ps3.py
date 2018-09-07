@@ -94,27 +94,23 @@ def get_word_score(word, n):
 
     # Create a list to store each letter that will be iterated over and total_score as 0 we add to this
     letter_values = []
-    word_points_sum = 0
+    word_letter_point_sum = 0
     word_length = 0
 
     # iterate over each char in word, use char as key and append its value to word points
-    for char in word:
+    for char in word.lower():
         word_length += 1
         if char in SCRABBLE_LETTER_VALUES:
             letter_values.append(SCRABBLE_LETTER_VALUES[char])
 
-    # Adding up each letters score for a total score of word
+    # Calculate the sum of letters in word
     for score in letter_values:
-        word_points_sum += score
+        word_letter_point_sum += score
 
-    # Calculate second component of word scores
-    score2 = word_length * n - word_length
+    # Calculate second component of the score
+    word_length_points = max(1, 7 * len(word) - 3 * (n - len(word)))
 
-
-    return word_points_sum, word_length, score2
-
-
-
+    return word_letter_point_sum * word_length_points
 
 def display_hand(hand):
     """
@@ -360,8 +356,9 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    # word_list = load_words()
 
-    n = 4
-    word = "coffee"
+    word_list = load_words()
+
+    n = 7
+    word = "was"
     print(get_word_score(word, n))
