@@ -104,8 +104,7 @@ def get_word_score(word, n):
             letter_values.append(SCRABBLE_LETTER_VALUES[char])
 
     # Calculate the sum of letters in word
-    for score in letter_values:
-        word_letter_point_sum += score
+    word_letter_point_sum = sum(letter_values)
 
     # Calculate second component of the score
     word_length_points = max(1, 7 * len(word) - 3 * (n - len(word)))
