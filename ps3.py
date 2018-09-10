@@ -201,8 +201,15 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
-
-    pass  # TO DO... Remove this line when you implement this function
+    if word.lower() in word_list:
+        for char in word.lower():
+            if char not in hand.keys():
+                return False
+            else:
+                if hand[char] - word.lower().count(char) >= 0:
+                    return True
+                else:
+                    return False
 
 #
 # Problem #5: Playing a hand
@@ -358,9 +365,10 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-
+    # hand = {'d': 1, 'o': 1, 'g': 1}
+    # word = 'Dog'
     word_list = load_words()
-
+    # print(is_valid_word(word, hand, word_list))
 
 
 
