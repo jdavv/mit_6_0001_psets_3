@@ -182,9 +182,12 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    updated_hand = {}
+    for char in hand:
+        updated_hand[char] = max(0, hand[char] - word.lower().count(char))
 
-#
+    return updated_hand
+
 # Problem #3: Test word validity
 #
 def is_valid_word(word, hand, word_list):
@@ -358,6 +361,6 @@ if __name__ == '__main__':
 
     word_list = load_words()
 
-    n = 7
-    word = "was"
-    print(get_word_score(word, n))
+
+
+
