@@ -413,30 +413,36 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+
+    # evaluate how many hands to play from user
     num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
-    # round_hand = deal_hand(HAND_SIZE)
+    # Initialize total score variable
     total_score = 0
+
     while num_of_hands_to_play >= 0:
+        # get  a hand
         round_hand = deal_hand(HAND_SIZE)
         print("total_score: ", total_score)
+        # show user the hand
         display_hand(round_hand)
+        # get a word from the user
         word = input("Word to play: ")
-        # num_of_hands_to_play += 1
-        # round_hand = update_hand(round_hand, word)
-        # display_hand(round_hand)
         print("num_of_hands_to_play", num_of_hands_to_play)
 
+        # if True, update the users score and subtract 1 from num_of_hands_to_play
         if is_valid_word(word, round_hand, word_list):
-            round_hand = update_hand(round_hand, word)
             print(word, 'is_valid_word TRUE')
             total_score += get_word_score(word, HAND_SIZE)
             num_of_hands_to_play -= 1
             continue
+
+        # if False, -1 num_of_hands_to_play
         else:
-            round_hand = update_hand(round_hand, word)
             print(word, 'is_valid_word FALSE')
             num_of_hands_to_play -= 1
             continue
+
+    # user has played all turns, show final score
     print('while loop is exited')
     print('You final score is: ', total_score)
 
@@ -447,7 +453,6 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    total_score = 0
     word_list = load_words()
     play_game(word_list)
 
