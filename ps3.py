@@ -440,67 +440,32 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+
+    # get a hand
     hand = deal_hand(HAND_SIZE)
+
+    # Get user input for how many rounds to play
     max_rounds = int(input("How many hands would you like to play? "))
+
+    # Initialize the round_score, and round_counter variable
     round_score = 0
+    round_counter = 1
+
+    # Loop until max_rounds is 0
     while max_rounds >= 0:
+
+        # Play the hand
         round_score += (play_hand(hand, word_list))
-        # max_rounds -= 1
-        print('Hand', (max_rounds - max_rounds) + 1, 'Score', round_score)
+
+        # Print hand score to user
+        print('Hand', round_counter, 'Score', round_score)
         print('-'*60)
+
+        # Decrease the max_round count and increase the round_counter
         max_rounds -= 1
+        round_counter += 1
+        continue
 
-    # # evaluate how many hands to play from user
-    # num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
-    # # Initialize total score variable
-    # total_score = 0
-    # round_hand = deal_hand(HAND_SIZE)
-    #
-    # while num_of_hands_to_play >= 0:
-    #
-    #     # get  a hand
-    #     # round_hand = deal_hand(HAND_SIZE)
-    #     print("total_score: ", total_score)
-    #
-    #     # show user the hand
-    #     display_hand(round_hand)
-    #
-    #     # get a word from the user
-    #     word = input("Word to play: ")
-    #     print("num_of_hands_to_play", num_of_hands_to_play)
-    #
-    #     # handle !!
-    #     if word == "!!":
-    #         print("!! accepted, do this...")
-    #         break
-    #
-    #     # input should be a word TODO sanitize inputs
-    #     else:
-    #         # if True, update the users score and subtract 1 from num_of_hands_to_play
-    #         if is_valid_word(word, round_hand, word_list):
-    #             print(word, 'is_valid_word TRUE')
-    #             total_score += get_word_score(word, HAND_SIZE)
-    #             round_hand = update_hand(round_hand, word)
-    #             # num_of_hands_to_play -= 1
-    #             continue
-    #
-    #     # if False, -1 num_of_hands_to_play
-    #         else:
-    #             print(word, 'is_valid_word FALSE')
-    #             round_hand = update_hand(round_hand, word)
-    #             num_of_hands_to_play -= 1
-    #             continue
-    #
-    # # user has played all turns, show final score
-    # print('while loop is exited')
-    # print('You final score is: ', total_score)
-
-
-#
-# Build data structures used for entire session and play game
-# Do not remove the "if __name__ == '__main__':" line - this code is executed
-# when the program is run directly, instead of through an import statement
-#
 if __name__ == '__main__':
     word_list = load_words()
     play_game(word_list)
