@@ -189,27 +189,69 @@ def update_hand(hand, word):
     return updated_hand
 
 # Problem #3: Test word validity
-#
+
+
 def is_valid_word(word, hand, word_list):
     """
     Returns True if word is in the word_list and is entirely
     composed of letters in the hand. Otherwise, returns False.
     Does not mutate hand or word_list.
-   
+
     word: string
     hand: dictionary (string -> int)
     word_list: list of lowercase strings
     returns: boolean
     """
-    if word.lower() in word_list:
-        for char in word.lower():
-            if char not in hand.keys():
-                return False
+
+    word = word.lower()
+    word_freq = get_frequency_dict(word)
+
+    def word_in_list_wildcard(word, word_list):
+        '''
+
+        :param word: a string provided as input from user
+        :param word_list: a list of possible words
+        :return: word_in_list : Boolean, True if any words in possible_words is found in word_list
+        '''
+
+        # Only vowels can be substituted, create a string of vowels to iterate
+        VOWELS = 'aeiou'
+        # Iterate through the vowel string replacing '*' with a vowel
+        possible_words = [word.replace('*', vowel) for vowel in VOWELS]
+        # Return True if any possible_words are in word_list
+        word_in_list = any([possible_words in word_list for possible_words in possible_words])
+        return word_in_list
+
+    def word_in_list(word, word_list):
+
+        # Check that word is actually in word_list
+        if word in word_list:
+            is_word_in_list = True
+        else:
+            is_word_in_list = False
+
+        return is_word_in_list
+
+    # When word is in word_list, check that hand character frequency - word character frequency is not a -
+    # negative number. This ensures user has enough characters to play that word.
+    # If not word_in_list() will trigger the logic to handle an '*' calling word_in_list_wildcard()
+    if word_in_list(word, word_list):
+        for key in word_freq:
+            if key == '*':
+                continue
             else:
-                if hand[char] - word.lower().count(char) >= 0:
-                    return True
+                if hand.get(key, 0) - word_freq.get(key, 0) >= 0:
+                    is_valid = True
                 else:
-                    return False
+                    is_valid = False
+                    break
+    else:
+        if word_in_list_wildcard(word, word_list):
+            is_valid = True
+        else:
+            is_valid = False
+
+    return is_valid
 
 #
 # Problem #5: Playing a hand
@@ -365,8 +407,8 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    # hand = {'d': 1, 'o': 1, 'g': 1}
-    # word = 'Dog'
+    # hand = {'n': 1, 'h': 1, '*': 1, 'y': 1, 'd': 1, 'w': 1, 'e': 2}
+    # word = 'Honey'
     word_list = load_words()
     # print(is_valid_word(word, hand, word_list))
 
