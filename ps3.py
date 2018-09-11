@@ -13,7 +13,7 @@ import string
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
-HAND_SIZE = 6
+HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
     'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
@@ -151,14 +151,18 @@ def deal_hand(n):
     num_vowels = int(math.ceil(n / 3))
 
     for i in range(num_vowels):
-        x = random.choice(VOWELS)
-        hand[x] = hand.get(x, 0) + 1
+
+        # hack to replace one of the vowels with *
+        if i == 1:
+            hand['*'] = 1
+        else:
+            x = random.choice(VOWELS)
+            hand[x] = hand.get(x, 0) + 1
     
     for i in range(num_vowels, n):    
         x = random.choice(CONSONANTS)
         hand[x] = hand.get(x, 0) + 1
 
-    hand['*'] = 1
     return hand
 
 #
@@ -418,29 +422,42 @@ def play_game(word_list):
     num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
     # Initialize total score variable
     total_score = 0
+    round_hand = deal_hand(HAND_SIZE)
 
     while num_of_hands_to_play >= 0:
+
         # get  a hand
-        round_hand = deal_hand(HAND_SIZE)
+        # round_hand = deal_hand(HAND_SIZE)
         print("total_score: ", total_score)
+
         # show user the hand
         display_hand(round_hand)
+
         # get a word from the user
         word = input("Word to play: ")
         print("num_of_hands_to_play", num_of_hands_to_play)
 
-        # if True, update the users score and subtract 1 from num_of_hands_to_play
-        if is_valid_word(word, round_hand, word_list):
-            print(word, 'is_valid_word TRUE')
-            total_score += get_word_score(word, HAND_SIZE)
-            num_of_hands_to_play -= 1
-            continue
+        # handle !!
+        if word == "!!":
+            print("!! accepted, do this...")
+            break
+
+        # input should be a word TODO sanitize inputs
+        else:
+            # if True, update the users score and subtract 1 from num_of_hands_to_play
+            if is_valid_word(word, round_hand, word_list):
+                print(word, 'is_valid_word TRUE')
+                total_score += get_word_score(word, HAND_SIZE)
+                round_hand = update_hand(round_hand, word)
+                # num_of_hands_to_play -= 1
+                continue
 
         # if False, -1 num_of_hands_to_play
-        else:
-            print(word, 'is_valid_word FALSE')
-            num_of_hands_to_play -= 1
-            continue
+            else:
+                print(word, 'is_valid_word FALSE')
+                round_hand = update_hand(round_hand, word)
+                num_of_hands_to_play -= 1
+                continue
 
     # user has played all turns, show final score
     print('while loop is exited')
