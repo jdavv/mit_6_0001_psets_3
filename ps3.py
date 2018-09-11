@@ -264,7 +264,7 @@ def calculate_handlen(hand):
     returns: integer
     """
     
-    pass  # TO DO... Remove this line when you implement this function
+    return sum(hand.values())
 
 def play_hand(hand, word_list):
 
@@ -339,6 +339,22 @@ def play_hand(hand, word_list):
 #
 # procedure you will use to substitute a letter in a hand
 #
+    # return calculate_handlen(hand)
+    #
+    # total_score = 0
+    #
+    # display_hand(hand)
+    # word = input('Enter word, or !! to indicate that you are finished: ')
+    # if is_valid_word(word, hand, word_list):
+    #     print("good guess")
+    #     hand = update_hand(hand, word)
+    #     # print('Round Score?', get_word_score(word, HAND_SIZE))
+    #     total_score += get_word_score(word, HAND_SIZE)
+    #     # print('Total Score', total_score)
+    # else:
+    #     print("not a word")
+    #     # print(display_hand(hand))
+    # return total_score
 
 def substitute_hand(hand, letter):
     """ 
@@ -396,9 +412,32 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
-    
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
-    
+    num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
+    # round_hand = deal_hand(HAND_SIZE)
+    total_score = 0
+    while num_of_hands_to_play >= 0:
+        round_hand = deal_hand(HAND_SIZE)
+        print("total_score: ", total_score)
+        display_hand(round_hand)
+        word = input("Word to play: ")
+        # num_of_hands_to_play += 1
+        # round_hand = update_hand(round_hand, word)
+        # display_hand(round_hand)
+        print("num_of_hands_to_play", num_of_hands_to_play)
+
+        if is_valid_word(word, round_hand, word_list):
+            round_hand = update_hand(round_hand, word)
+            print(word, 'is_valid_word TRUE')
+            total_score += get_word_score(word, HAND_SIZE)
+            num_of_hands_to_play -= 1
+            continue
+        else:
+            round_hand = update_hand(round_hand, word)
+            print(word, 'is_valid_word FALSE')
+            num_of_hands_to_play -= 1
+            continue
+    print('while loop is exited')
+    print('You final score is: ', total_score)
 
 
 #
@@ -407,10 +446,10 @@ def play_game(word_list):
 # when the program is run directly, instead of through an import statement
 #
 if __name__ == '__main__':
-    # hand = {'n': 1, 'h': 1, '*': 1, 'y': 1, 'd': 1, 'w': 1, 'e': 2}
-    # word = 'Honey'
+    total_score = 0
     word_list = load_words()
-    # print(is_valid_word(word, hand, word_list))
+    play_game(word_list)
+
 
 
 
