@@ -334,7 +334,45 @@ def play_hand(hand, word_list):
 
     # Return the total score as result of function
 
+    # evaluate how many hands to play from user
+    # num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
+    # Initialize total score variable
+    total_score = 0
+    round_hand = deal_hand(HAND_SIZE)
 
+    while sum(round_hand.values()) > 0:
+        # show user the hand
+        display_hand(round_hand)
+
+        # get a word from the user
+        word = input("Word to play: ")
+
+        # handle !! input exit the loop
+        if word == "!!":
+            break
+        # input should be a word TODO sanitize inputs
+        else:
+
+            # if word in word_list update hand and score
+            if is_valid_word(word, round_hand, word_list):
+                total_score += get_word_score(word, HAND_SIZE)
+                round_hand = update_hand(round_hand, word)
+                continue
+
+        # if False
+            else:
+                print('Sorry', word, 'is not a word')
+                round_hand = update_hand(round_hand, word)
+                continue
+
+    if word == '!!':
+        print('!! Received, ending hand')
+        print('-'*60)
+    else:
+        print('Out of letters, ending hand')
+        print('-'*60)
+
+    return total_score
 
 #
 # Problem #6: Playing a game
@@ -345,21 +383,6 @@ def play_hand(hand, word_list):
 # procedure you will use to substitute a letter in a hand
 #
     # return calculate_handlen(hand)
-    #
-    # total_score = 0
-    #
-    # display_hand(hand)
-    # word = input('Enter word, or !! to indicate that you are finished: ')
-    # if is_valid_word(word, hand, word_list):
-    #     print("good guess")
-    #     hand = update_hand(hand, word)
-    #     # print('Round Score?', get_word_score(word, HAND_SIZE))
-    #     total_score += get_word_score(word, HAND_SIZE)
-    #     # print('Total Score', total_score)
-    # else:
-    #     print("not a word")
-    #     # print(display_hand(hand))
-    # return total_score
 
 def substitute_hand(hand, letter):
     """ 
@@ -417,51 +440,60 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+    hand = deal_hand(HAND_SIZE)
+    max_rounds = int(input("How many hands would you like to play? "))
+    round_score = 0
+    while max_rounds >= 0:
+        round_score += (play_hand(hand, word_list))
+        # max_rounds -= 1
+        print('Hand', (max_rounds - max_rounds) + 1, 'Score', round_score)
+        print('-'*60)
+        max_rounds -= 1
 
-    # evaluate how many hands to play from user
-    num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
-    # Initialize total score variable
-    total_score = 0
-    round_hand = deal_hand(HAND_SIZE)
-
-    while num_of_hands_to_play >= 0:
-
-        # get  a hand
-        # round_hand = deal_hand(HAND_SIZE)
-        print("total_score: ", total_score)
-
-        # show user the hand
-        display_hand(round_hand)
-
-        # get a word from the user
-        word = input("Word to play: ")
-        print("num_of_hands_to_play", num_of_hands_to_play)
-
-        # handle !!
-        if word == "!!":
-            print("!! accepted, do this...")
-            break
-
-        # input should be a word TODO sanitize inputs
-        else:
-            # if True, update the users score and subtract 1 from num_of_hands_to_play
-            if is_valid_word(word, round_hand, word_list):
-                print(word, 'is_valid_word TRUE')
-                total_score += get_word_score(word, HAND_SIZE)
-                round_hand = update_hand(round_hand, word)
-                # num_of_hands_to_play -= 1
-                continue
-
-        # if False, -1 num_of_hands_to_play
-            else:
-                print(word, 'is_valid_word FALSE')
-                round_hand = update_hand(round_hand, word)
-                num_of_hands_to_play -= 1
-                continue
-
-    # user has played all turns, show final score
-    print('while loop is exited')
-    print('You final score is: ', total_score)
+    # # evaluate how many hands to play from user
+    # num_of_hands_to_play = int(input('How many hands would you like to play? ')) - 1
+    # # Initialize total score variable
+    # total_score = 0
+    # round_hand = deal_hand(HAND_SIZE)
+    #
+    # while num_of_hands_to_play >= 0:
+    #
+    #     # get  a hand
+    #     # round_hand = deal_hand(HAND_SIZE)
+    #     print("total_score: ", total_score)
+    #
+    #     # show user the hand
+    #     display_hand(round_hand)
+    #
+    #     # get a word from the user
+    #     word = input("Word to play: ")
+    #     print("num_of_hands_to_play", num_of_hands_to_play)
+    #
+    #     # handle !!
+    #     if word == "!!":
+    #         print("!! accepted, do this...")
+    #         break
+    #
+    #     # input should be a word TODO sanitize inputs
+    #     else:
+    #         # if True, update the users score and subtract 1 from num_of_hands_to_play
+    #         if is_valid_word(word, round_hand, word_list):
+    #             print(word, 'is_valid_word TRUE')
+    #             total_score += get_word_score(word, HAND_SIZE)
+    #             round_hand = update_hand(round_hand, word)
+    #             # num_of_hands_to_play -= 1
+    #             continue
+    #
+    #     # if False, -1 num_of_hands_to_play
+    #         else:
+    #             print(word, 'is_valid_word FALSE')
+    #             round_hand = update_hand(round_hand, word)
+    #             num_of_hands_to_play -= 1
+    #             continue
+    #
+    # # user has played all turns, show final score
+    # print('while loop is exited')
+    # print('You final score is: ', total_score)
 
 
 #
